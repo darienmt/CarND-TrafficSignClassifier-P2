@@ -89,3 +89,5 @@ ENV/
 .ropeproject
 
 **/train.p
+
+**/.DS_Store

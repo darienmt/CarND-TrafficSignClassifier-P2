@@ -1,45 +1,15 @@
-# CarND-TrafficSignClassifier-P2
-Udacity Self Driving Car Nanodegree - Traffic Sign Classifier
+# Traffic Sign Recognition - Writeup
 
-This repo contains the second project on Udacity Self-Driving Car Nanodegree Term 1.
-The project consist on training a [Convolutional Neural Network](https://en.wikipedia.org/wiki/Convolutional_neural_network) to recognize traffic signs.
-The project definition could be found [here](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project)
+## Build a Traffic Sign Recognition Project
 
-# Prerequisites
+The goals/steps of this project are the following:
 
-To run this project, you need [Miniconda](https://conda.io/miniconda.html) installed(please visit [this link](https://conda.io/docs/install/quick.html) for quick installation instructions.)
-
-# Installation
-To create an environment for this project use the following command:
-
-```
-conda env create -f environment.yml
-```
-
-After the environment is created, it needs to be activated with the command:
-
-```
-source activate carnd-term1
-```
-
-Unzip the file `./data/train.p.zip` to the `./data`. This file contains the traffic signs for training, and it is too big to have it in github without compression.
-
-To pen the project's notebook [Traffic Classifier Simplified.ipynb](Traffic%20Classifier%20Simplified.ipynb) inside jupyter notebook:
-
-```
-jupyter notebook "Traffic Classifier Simplified.ipynb"
-```
-
-# Overview
-
-The main code is [Traffic Classifier Simplified.ipynb](Traffic%20Classifier%20Simplified.ipynb).
-There are other important directories:
-
-- **data** : Contains the traffic signs images for training, validation and test the neural network.
-- **models** : Contains the saved models from training.
-- **webimages** : Contains five images found on the Web to test the agains them.
-
-There is another notebook I used to play with preprocessing images and networks [Experiments Traffic Sign Classifier.ipynb](Experiments%20Traffic%20Sign%20Classifier.ipynb)
+- Load the data set (see below for links to the project data set)
+- Explore, summarize and visualize the data set
+- Design, train and test a model architecture
+- Use the model to make predictions on new images
+- Analyze the softmax probabilities of the new images
+- Summarize the results with a written report
 
 # Project
 

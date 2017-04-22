@@ -112,7 +112,7 @@ The introduction of dropout help to stabilize the training process.
 
 I started training with 15 epochs, and they increased it to 40. Using 128 as batch size (I didn't play with this parameter), learning rate 0.001 and use [Adam](http://sebastianruder.com/optimizing-gradient-descent/index.html#adam) optimizer not needing to change the learning rate. Here is my network accuracy by epoch:
 
-![Network accuracy by epoch](images/training.png)
+![Network accuracy by epoch](images/training_new.png)
 
 The final model have:
 - **Train Accuracy**: 100 %

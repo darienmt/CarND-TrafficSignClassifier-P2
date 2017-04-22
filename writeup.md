@@ -84,12 +84,19 @@ I started training with 15 epochs, and they increased it to 40. Using 128 as bat
 
 ![Network accuracy by epoch](images/training.png)
 
+The final model have:
+- **Train Accuracy**: 100 %
+- **Validation Accuracy**: 95.6 %
+- **Test Accuracy**: 94.5 %
+
 ## Step 3: Test a Model on New images
 
 In this step, five new images found on the Web are classified.
 First, the images are loaded and presented:
 
 ![Web images](images/webimages.png)
+
+The only image that should be complicated for the neural network to identify is `road_work.jpg` because it is a vertical flip of the road work images used on training. I didn't know that, but it could be interesting to see how it works on it.
 
 The same pre-processing is applied to them:
 

@@ -128,7 +128,7 @@ Here are the top five softmax probabilities for them and their name values:
 
 - Image: webimages/yield_sign.jpg
   - It was classified correctly.
-  -  Probabilities:
+  - Probabilities:
     - **1.000000 : 13 - Yield**
     - 0.000000 : 29 - Bicycles crossing
     - 0.000000 : 23 - Slippery road

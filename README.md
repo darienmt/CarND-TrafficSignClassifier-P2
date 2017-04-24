@@ -61,19 +61,19 @@ Here the data set is explored. First, show some general numbers about it:
 
 We have 43 different traffic signs. Some random images are shown:
 
-![Data exploration, random images from train dataset](images/data_exploration.png)
+![Data exploration, random images from train dataset](images/data_exploration_1.png)
 
 and the distribution of the labels is presented:
 
-![Label distribution](images/label_distribution.png)
+![Label distribution](images/label_distribution_1.png)
 
 The distribution has too many images on the first labels. I needed to have more images to train out model. The process is called [data augmentation](https://www.techopedia.com/definition/28033/data-augmentation). New images are created from the training data by transforming images with small distribution. The transformation used were arbitrary scaling [1.0 - 1.3], random translation [-3, 3] pixels in both axes, and random rotation [-90, 90] degrees.
 
-![Image transformations](images/transformations.png)
+![Image transformations](images/transformations_1.png)
 
 After both new and original images are together, the train data has a more even distribution:
 
-![Label distribution after augmentation](images/label_distribution_after.png)
+![Label distribution after augmentation](images/label_distribution_after_1.png)
 
 ## Step 2: Design and Test a Model architecture
 
@@ -82,11 +82,16 @@ After both new and original images are together, the train data has a more even 
 Neural networks work better if the input(feature) distributions have mean zero. A suggested way to have that normalization was to operate on each pixel by applying: `(pixel - 128)/128.`
 There are a lot of different preprocessing we could do to improve the image qualities (I did some testing [here](Experiments%20Traffic%20Sign%20Classifier.ipynb)), but I decided to go just for gray scaling the images.
 
-![Gray image](images/gray_image.png)
+The final pre-processing used consist of two steps:
+
+- Converting the images to gray scale using **OpenCV**.
+- Transforming the pixel values to the range [-1, 1] by subtracting 128 and then divide it by 128.
+
+![Gray image](images/gray_image_1.png)
 
 ### Model architecture
 
-First, I started with the [LeNet](https://github.com/darienmt/intro-to-tensorflow/blob/master/LeNet-Lab.ipynb) lab provided by [Udacity](https://github.com/udacity/CarND-LeNet-Lab). After a few iteration of increasing epochs, etc. My goal was to get 90% accuracy with 15 epochs. To have that, I increased the different layers of this architecture:
+The starting model was [LeNet](http://yann.lecun.com/exdb/lenet/) provided by [Udacity](https://github.com/udacity/CarND-LeNet-Lab). This model was proved to work well in the recognition hand and print written character. It could be a good fit for the traffic sign classification. After modifying the standard model work with color pictures, I could not have more than 90% accuracy with my current dataset and 15 epochs. To improve that, start making the first two convolution layer deeper, and then increase the size of the fully-connected layers as well. With these modifications, I got just above 90% accuracy. To go further, I added two dropout layers with 0.7 keep probability and increased the training epochs to 40. The final model is described as follows:
 
 |Layer | Description|Output|
 |------|------------|------|
@@ -100,10 +105,10 @@ First, I started with the [LeNet](https://github.com/darienmt/intro-to-tensorflo
 |Fatten| To connect to fully-connected layers |
 |Fully-connected Layer 1| | 1600|
 |RELU| | |
-|Dropout| 0.7 keep probability ||
+|Dropout| 0.6 keep probability ||
 |Fully-connected Layer 2| | 240
 |RELU| | |
-|Dropout| 0.7 keep probability||
+|Dropout| 0.6 keep probability||
 |Fully-connected Layer 3| | 43
 
 The introduction of dropout help to stabilize the training process.
@@ -112,12 +117,12 @@ The introduction of dropout help to stabilize the training process.
 
 I started training with 15 epochs, and they increased it to 40. Using 128 as batch size (I didn't play with this parameter), learning rate 0.001 and use [Adam](http://sebastianruder.com/optimizing-gradient-descent/index.html#adam) optimizer not needing to change the learning rate. Here is my network accuracy by epoch:
 
-![Network accuracy by epoch](images/training_new.png)
+![Network accuracy by epoch](images/training_1.png)
 
 The final model have:
-- **Train Accuracy**: 100 %
-- **Validation Accuracy**: 95.6 %
-- **Test Accuracy**: 94.5 %
+- **Train Accuracy**: 99.9 %
+- **Validation Accuracy**: 96.8 %
+- **Test Accuracy**: 95.0 %
 
 ## Step 3: Test a Model on New images
 
@@ -134,53 +139,58 @@ The same pre-processing is applied to them:
 
 And then they are fed to the neural network. I was curious about the output value distribution:
 
-![Web images output histogram](images/webimageshist.png)
+![Web images network output](images/webimageclasses.png)
 
-On four of them, there is a clear winner (highlighted on the graph), but there was not a clear winner on the road_work.jpg. That make the network 80% accurate on this images:
+Four out of the five images were classified correctly. That make the network 80% accurate on this images:
 
-![Web images classified](images/webimagesclassified.png)
+![Web images classified](images/webimagesclassified_1.png)
 
 Here are the top five softmax probabilities for them and their name values:
 
 - Image: webimages/stop_sign.jpg
+  - It was classified correctly.
   - Probabilities:
-    - 32.556 : 14 - Stop
-    - 8.078 : 24 - Road narrows on the right
-    - 6.619 : 29 - Bicycles crossing
-    - 5.679 : 0 - Speed limit (20km/h)
-    - 2.261 : 26 - Traffic signals
+    - **0.999998 : 14 - Stop**
+    - 0.000002 : 0 - Speed limit (20km/h)
+    - 0.000000 : 2 - Speed limit (50km/h)
+    - 0.000000 : 1 - Speed limit (30km/h)
+    - 0.000000 : 4 - Speed limit (70km/h)
 
 - Image: webimages/yield_sign.jpg
-  - Probabilities:
-    - 65.943 : 13 - Yield
-    - 11.349 : 29 - Bicycles crossing
-    - -0.900 : 35 - Ahead only
-    - -3.275 : 25 - Road work
-    - -6.000 : 34 - Turn left ahead
+  - It was classified correctly.
+  -  Probabilities:
+    - **1.000000 : 13 - Yield**
+    - 0.000000 : 29 - Bicycles crossing
+    - 0.000000 : 23 - Slippery road
+    - 0.000000 : 34 - Turn left ahead
+    - 0.000000 : 22 - Bumpy road
 
 - Image: webimages/road_work.jpg
+  - **It was not classified correctly.**
   - Probabilities:
-    - 29.975 : 30 - Beware of ice/snow
-    - 22.087 : 24 - Road narrows on the right
-    - 16.370 : 29 - Bicycles crossing
-    - 13.887 : 23 - Slippery road
-    - 11.258 : 21 - Double curve
+    - 0.999996 : 28 - Children crossing
+    - 0.000004 : 24 - Road narrows on the right
+    - 0.000000 : 30 - Beware of ice/snow
+    - 0.000000 : 29 - Bicycles crossing
+    - 0.000000 : 21 - Double curve
 
 - Image: webimages/left_turn.jpg
+  - It was classified correctly.
   - Probabilities:
-    - 89.443 : 34 - Turn left ahead
-    - 18.121 : 29 - Bicycles crossing
-    - 11.056 : 23 - Slippery road
-    - 2.369 : 37 - Go straight or left
-    - -0.442 : 35 - Ahead only
+    - **1.000000 : 34 - Turn left ahead**
+    - 0.000000 : 14 - Stop
+    - 0.000000 : 38 - Keep right
+    - 0.000000 : 15 - No vehicles
+    - 0.000000 : 29 - Bicycles crossing
 
 - Image: webimages/60_kmh.jpg
+  - It was classified correctly.
   - Probabilities:
-    - 37.983 : 3 - Speed limit (60km/h)
-    - 15.663 : 38 - Keep right
-    - 9.374 : 9 - No passing
-    - 2.040 : 23 - Slippery road
-    - 1.109 : 29 - Bicycles crossing
+    - **1.000000 : 3 - Speed limit (60km/h)**
+    - 0.000000 : 2 - Speed limit (50km/h)
+    - 0.000000 : 38 - Keep right
+    - 0.000000 : 5 - Speed limit (80km/h)
+    - 0.000000 : 13 - Yield
 
 ## Step 4 (Optional): Visualize the Neural Network's State with Test Images
 
